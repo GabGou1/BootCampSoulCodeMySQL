@@ -123,7 +123,7 @@ SELECT * FROM produto WHERE idVendedor = '7';
 SELECT * FROM vendedor WHERE email LIKE '%@hotmail%';
 
 -- Filtrar os produtos do vendedor com ID = 1 e calcular o preço do produto com desconto;
-SELECT nome, descricao, percentualDesconto, preco - (preco * percentualDesconto) AS 'preco com desconto', idVendedor FROM produto WHERE idVendedor = '1'; 
+SELECT nome, descricao, preco, percentualDesconto, preco - (preco * percentualDesconto) AS 'preco com desconto', idVendedor FROM produto WHERE idVendedor = '1'; 
 
 -- Filtrar os produtos das categorias Roupas, Alimentos e Acessórios;
 SELECT * FROM produto WHERE idCategoria IN (2,3,4);
@@ -136,3 +136,65 @@ SELECT * FROM produto WHERE month(validadeDesconto) < month(CURDATE());
 
 -- Filtrar venda de eletrônicos de SP
 SELECT produto.nome, produto.preco, produto.descricao, categoria.nome, vendedor.nome, endereco.uf FROM produto, categoria, vendedor, endereco WHERE produto.idVendedor = vendedor.idVendedor AND produto.idCategoria = categoria.idCategoria AND vendedor.idVendedor = endereco.idVendedor AND endereco.uf = 'SP' AND categoria.nome = 'Eletrônicos';
+
+-- Projeção
+SELECT 1 + 1;
+SELECT curdate(); -- Retorna a data do dia
+SELECT nome, sobrenome FROM vendedor;
+SELECT CONCAT(nome, ' ', sobrenome) AS nomeCompleto FROM vendedor;
+
+SELECT * -- Mostrar todas as colunas
+FROM vendedor -- Da tabela vendedor
+WHERE idVendedor = 3; -- Onde o id é três
+SELECT *
+FROM vendedor
+WHERE idVendedor != 3; -- Traz todos menos o três
+
+SELECT *
+FROM produto
+WHERE validadeDesconto IS NULL; -- Filtrar todos os registros nulos
+SELECT *
+FROM produto
+WHERE validadeDesconto IS NOT NULL; -- Filtrar todos os registros que não são nulos
+
+SELECT *
+FROM vendedor
+WHERE idVendedor = 1 OR idVendedor = 3 OR idVendedor = 6; -- OR = basta uma consição verdadeira
+SELECT *
+FROM vendedor
+WHERE idVendedor BETWEEN 1 AND 6;
+
+SELECT * 
+FROM endereco
+WHERE uf IN("SP", "CE", "MG");
+SELECT * 
+FROM endereco
+WHERE uf NOT IN("SP", "CE", "MG");
+
+SELECT *
+FROM vendedor
+WHERE nome LIKE "J%";
+
+SELECT *
+FROM produto
+ORDER BY nome; -- DESC -> decrescente
+
+-- LIMIT
+SELECT * -- Todas as colunas
+FROM produto -- tabela
+WHERE estoque BETWEEN 200 AND 500 -- estoque entre 200 e 500
+LIMIT 5; -- limite de linhas 5
+
+SELECT nome, sobrenome, dataNascimento
+FROM vendedor
+WHERE YEAR(dataNascimento) BETWEEN 1993 AND 1995
+ORDER BY nome
+LIMIT 20;
+
+SELECT nome, preco, (preco * estoque) AS 'lucro_total'
+FROM produto
+WHERE idProduto IN(1, 2, 3) AND preco < 100
+ORDER BY nome
+LIMIT 100;
+
+-- AS -> alias = apelido temporário para uma coluna/tabela
