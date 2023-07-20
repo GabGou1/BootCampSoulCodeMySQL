@@ -198,3 +198,28 @@ ORDER BY nome
 LIMIT 100;
 
 -- AS -> alias = apelido temporário para uma coluna/tabela
+
+-- Aula 18.07
+-- Q1: Agrupar os produtos por percentualDesconto e contar quantos em cada grupo;
+SELECT percentualDesconto, COUNT(*) AS quant_prod
+FROM produto
+GROUP BY percentualDesconto;
+
+-- Q2: Agrupar os produtos por idCategoria e calcular o preço médio por categoria;
+SELECT idCategoria, ROUND(AVG(preco), 2) AS preco_medio
+FROM produto
+GROUP BY idCategoria;
+
+-- Q3: Agrupar os endereços por UF e mostrar quantos vendedores estão em cada estado;
+SELECT uf, COUNT(idVendedor) AS vendedores
+FROM endereco
+GROUP BY uf;
+
+-- Q4: Agrupar os produtos por idVendedor e calcular a média de estoque.
+	-- Filtrar os grupos com média acima de 100;
+    -- Ordenar por média de estoques;
+SELECT idVendedor, AVG(estoque) AS media_estoque
+FROM produto
+GROUP BY idVendedor
+HAVING media_estoque >= 100
+ORDER BY media_estoque DESC;
