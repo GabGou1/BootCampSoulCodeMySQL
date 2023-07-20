@@ -1,4 +1,4 @@
--- Criação da tabela
+-- Criação das tabelas
 CREATE DATABASE spotify;
 USE spotify;
 
@@ -90,7 +90,7 @@ INSERT INTO playlist_musicas (fkMusicas, fkPlaylist)
 VALUES (1, 1),
        (2, 1),
        (3, 2),
-       (4, 3);    
+       (4, 3);
 
 SHOW TABLES;
 SELECT * FROM usuarios;
@@ -100,3 +100,54 @@ SELECT * FROM albuns;
 SELECT * FROM musicas;
 SELECT * FROM playlist;
 SELECT * FROM playlist_musicas;
+
+-- Comandos DML e DQL
+-- Inserir dados
+INSERT INTO artistas (idArtistas, nome, nMusicas, nSeguidores)
+VALUES (NULL, "Artista D", 25, 3000);
+
+-- Atualizar de acordo com o WHERE
+UPDATE musicas
+SET nome = "Hantengu"
+WHERE idMusicas = 1;
+
+-- Deletar uma tabela, ou coluna de acordo com WHERE
+DELETE FROM artistas
+WHERE idArtistas = 4;
+
+-- Quem cada usuário segue
+SELECT U.nome AS Usuario, A.nome AS Artista FROM usuarios AS U
+	JOIN usuarios_artistas AS UA
+    ON U.idUsuarios = UA.fkUsuarios
+    JOIN artistas AS A
+    ON A.idArtistas = UA.fkArtistas
+GROUP BY U.nome, A.nome;
+
+-- Quantas musicas cada playlist tem
+SELECT P.nome AS Playlist, COUNT(M.idMusicas) AS Quantidade_Musica FROM playlist AS P
+	JOIN  playlist_musicas AS PM
+    ON P.idPlaylist = PM.fkPlaylist
+    JOIN musicas AS M
+    ON M.idMusicas = PM.fkMusicas
+GROUP BY P.nome;
+
+-- Ordena as musicas por ordem de lançamento
+SELECT nome, dataLancamento FROM musicas ORDER BY dataLancamento;
+
+-- Menor e maior quantidade de seguidores dos artistas
+SELECT MIN(nSeguidores) AS Menor_Quantidade_Seguidores, MAX(nSeguidores) AS Maior_Quantidade_Seguidores FROM artistas;
+
+-- Soma de todos os seguidores dos artistas
+SELECT SUM(nSeguidores) AS Seguidores_Somados FROM artistas;
+
+-- Mostra as playlists com a quantidade igual ou maior de duas músicas
+SELECT fkPlaylist, COUNT(fkMusicas) AS total_musicas FROM playlist_musicas
+GROUP BY fkPlaylist
+HAVING COUNT(fkMusicas) >= 2;
+
+-- Mostra todas as playlists com nomes diferentes
+SELECT DISTINCT nome FROM playlist;
+
+-- Comandos que eu não irei utilizar para não apagar os dados
+-- TRUNCATE TABLE "nome"; apagar somente os elementos dentro da tabela
+-- DROP TABLE/DATABASE "nome"; derruba todo o objeto referenciado
