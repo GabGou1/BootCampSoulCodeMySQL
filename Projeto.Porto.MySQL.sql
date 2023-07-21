@@ -140,10 +140,11 @@ SELECT MIN(nSeguidores) AS Menor_Quantidade_Seguidores, MAX(nSeguidores) AS Maio
 -- Soma de todos os seguidores dos artistas
 SELECT SUM(nSeguidores) AS Seguidores_Somados FROM artistas;
 
--- Mostra as playlists com a quantidade igual ou maior de duas músicas
-SELECT fkPlaylist, COUNT(fkMusicas) AS total_musicas FROM playlist_musicas
-GROUP BY fkPlaylist
-HAVING COUNT(fkMusicas) >= 2;
+-- Mostra os albuns com a quantidade igual ou maior de dez músicas
+SELECT Al.titulo, A.nome FROM albuns AS Al
+	JOIN artistas AS A
+    ON Al.fkArtistas = A.idArtistas
+WHERE A.nMusicas >= 10;
 
 -- Mostra todas as playlists com nomes diferentes
 SELECT DISTINCT nome FROM playlist;
